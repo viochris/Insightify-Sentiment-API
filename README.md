@@ -49,6 +49,8 @@ It doesn't just process rows; it analyzes the *whole picture*. When you upload a
 
 ## 🔌 Integration Guide (API Contract)
 
+## 🔌 Integration Guide (API Contract)
+
 ### Live Base URL
 **[https://silvio0-simple-sentiment-analyst.hf.space](https://silvio0-simple-sentiment-analyst.hf.space)**
 
@@ -65,6 +67,13 @@ Analyze a single sentence instantly.
       "text_input": "Pelayanan sangat memuaskan dan cepat!"
     }
     ```
+* **Response (JSON):**
+    ```json
+    {
+      "prediction": "positive",
+      "confidence": 0.98
+    }
+    ```
 
 ### 2. Batch File Analysis (Deep Insight)
 Upload a file to analyze thousands of rows at once.
@@ -74,11 +83,102 @@ Upload a file to analyze thousands of rows at once.
     * 🇮🇩 Indonesian: `/predict-table-sentiment/id`
 * **Method:** `POST`
 * **Body (Form-Data):**
-    * `file`: (Binary .csv/.xlsx) *Must have column named 'komentar'*
-    * `num`: (Int) Number of keywords to extract (Default: 5)
-    * `ngram_min`: (Int) Min word phrase length
-    * `ngram_max`: (Int) Max word phrase length
-    * `sentiment`: (String) Filter keywords by "positive", "negative", or "neutral"
+    * `file`: (Binary) **Required**. Only accepts `.csv` or `.xlsx`. *Must contain a column named 'komentar'.*
+    * `num`: (Int) Number of keywords to extract. *Default: 5 (Min: 1, Max: 10).*
+    * `ngram_min`: (Int) Min word phrase length. *Default: 1 (Min: 1, Max: 3).*
+    * `ngram_max`: (Int) Max word phrase length. *Default: 1 (Min: 1, Max: 3).*
+    * `sentiment`: (String) Context filter for extraction. *Options: "positive", "negative", "neutral".*
+* **Response (JSON):**
+    ```json
+    {
+      "status": "Success",
+      "filename": "data_review.csv",
+      "rows": 10,
+      "data_preview": [
+        {
+          "komentar": "This app is really great!"
+        },
+        {
+          "komentar": "Slow and often crashes, so annoying"
+        }
+      ],
+      "predict_result": [
+        {
+          "komentar": "This app is really great!",
+          "Sentiment": "positive",
+          "Confidence": "98.8%",
+          "Text Length": 1,
+          "Word Length": 5
+        },
+        {
+          "komentar": "Slow and often crashes, so annoying",
+          "Sentiment": "negative",
+          "Confidence": "93.6%",
+          "Text Length": 1,
+          "Word Length": 6
+        },
+        {
+          "komentar": "The design is cool but sometimes it errors.",
+          "Sentiment": "negative",
+          "Confidence": "53.2%",
+          "Text Length": 1,
+          "Word Length": 8
+        }
+      ],
+      "sentiment_count": [
+        {
+          "Sentiment": "negative",
+          "count": 6
+        },
+        {
+          "Sentiment": "positive",
+          "count": 4
+        }
+      ],
+      "top_keywords": [
+        {
+          "Word": "app",
+          "Jumlah": 1
+        },
+        {
+          "Word": "really",
+          "Jumlah": 1
+        },
+        {
+          "Word": "great",
+          "Jumlah": 1
+        },
+        {
+          "Word": "love",
+          "Jumlah": 1
+        },
+        {
+          "Word": "new",
+          "Jumlah": 1
+        }
+      ],
+      "text_length": [
+        {
+          "Sentiment": "negative",
+          "Text Length": 1
+        },
+        {
+          "Sentiment": "positive",
+          "Text Length": 1
+        }
+      ],
+      "word_length": [
+        {
+          "Sentiment": "positive",
+          "Word Length": 6
+        },
+        {
+          "Sentiment": "negative",
+          "Word Length": 8
+        }
+      ]
+    }
+    ```
 
 ## 📚 Interactive Documentation (Swagger UI)
 
