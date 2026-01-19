@@ -49,8 +49,6 @@ It doesn't just process rows; it analyzes the *whole picture*. When you upload a
 
 ## 🔌 Integration Guide (API Contract)
 
-## 🔌 Integration Guide (API Contract)
-
 ### Live Base URL
 **[https://silvio0-simple-sentiment-analyst.hf.space](https://silvio0-simple-sentiment-analyst.hf.space)**
 
